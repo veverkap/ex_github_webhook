@@ -20,6 +20,11 @@ defmodule ExGithubWebhook.MixProject do
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
-    [{:plug, "~>1.4"}, {:jason, "~> 1.1"}]
+    [
+      {:plug, "~>1.4"},
+      {:jason, "~> 1.1"},
+      {:mojito, "~> 0.2.2", only: [:dev, :test]},
+      {:floki, "~> 0.21.0", only: [:dev, :test]}
+    ]
   end
 end

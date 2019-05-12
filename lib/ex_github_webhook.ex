@@ -7,9 +7,10 @@ defmodule ExGithubWebhook do
   end
 
   def call(conn, options) do
+    # headers = conn.req_headers
     {:ok, payload, _conn} = read_body(conn)
-    result = Jason.decode!(payload)
-    IO.inspect(result)
+    # result = Jason.decode!(payload)
+    # IO.inspect(result)
     conn |> send_resp(200, "OK")
   end
 end
