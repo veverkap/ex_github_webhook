@@ -7,11 +7,25 @@ defmodule ExGithubWebhook do
   end
 
   def call(conn, options) do
-    # headers = conn.req_headers
-    # {:ok, payload, _conn} = read_body(conn)
-    # # result = Jason.decode!(payload)
-    # # IO.inspect(result)
-    # conn |> send_resp(200, "OK")
+    code =
+      Path.wildcard("#{File.cwd!()}/test/factories/*.ex")
+      |> Enum.map(fn file ->
+        File.read!(file)
+      end)
+      |> Enum.sort()
+      |> Enum.join("\n")
+
+    newcode = """
+    defmodule ExGithubWebhook.Factory do
+    use ExMachina
+
+    #{String.replace(code, "null", "nil")}
+    end
+    """
+
+    File.write!("#{File.cwd!()}/test/support/factory.ex", newcode)
+    raise "FUCK"
+
     Path.wildcard("#{File.cwd!()}/test/fixtures/**/*.json")
     |> Enum.map(fn original_file ->
       folder =
@@ -20,16 +34,15 @@ defmodule ExGithubWebhook do
 
       contents = File.read!(original_file)
       item = Jason.decode!(contents)
-      new_item = process_map(item, folder)
-      raise "fuck"
+      IO.puts("item = build(:#{folder})")
+      IO.puts("IO.puts(item)\n")
+      # new_item = process_map(item, folder)
     end)
   end
 
   def process_map(map, module) do
     factory_name =
       "/Users/Patrick/Code/personal/ex_github_webhook/test/factories/#{module}_factory.ex"
-
-    # IO.puts("WRITING #{factory_name}")
 
     child_content =
       Map.keys(map)
