@@ -21,30 +21,40 @@ defmodule ExGithubWebhook do
       contents = File.read!(original_file)
       item = Jason.decode!(contents)
       new_item = process_map(item, folder)
+      raise "fuck"
     end)
   end
 
   def process_map(map, module) do
-    factory_name = "/Users/Patrick/Code/personal/ex_github_webhook/test/factories/#{module}.ex"
+    factory_name =
+      "/Users/Patrick/Code/personal/ex_github_webhook/test/factories/#{module}_factory.ex"
+
+    # IO.puts("WRITING #{factory_name}")
+
+    child_content =
+      Map.keys(map)
+      |> Enum.reduce(%{}, fn key, obj ->
+        value =
+          case is_map(map[key]) do
+            true ->
+              process_map(map[key], key)
+              "build(:#{key})"
+
+            false ->
+              map[key]
+          end
+
+        Map.put(obj, key, value)
+      end)
+
+    content = """
+      def #{module}_factory do
+        %#{Jason.encode!(child_content, pretty: true)}
+      end
+    """
 
     if !File.exists?(factory_name) do
-      File.write!(factory_name, Jason.encode!(map))
+      File.write!(factory_name, content)
     end
-
-    Map.keys(map)
-    |> Enum.reduce(%{}, fn key, obj ->
-      value =
-        case is_map(map[key]) do
-          true ->
-            process_map(map[key], key)
-
-          false ->
-            map[key]
-        end
-
-      obj = Map.put(obj, key, value)
-
-      obj
-    end)
   end
 end
