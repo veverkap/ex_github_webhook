@@ -3,7 +3,7 @@
 use Mix.Config
 
 config :logger,
-  level: :warn,
+  level: :info,
   truncate: 4096
 
 # This configuration is loaded before any dependency and is restricted

@@ -7,67 +7,21 @@ defmodule ExGithubWebhook do
   end
 
   def call(conn, options) do
-    code =
-      Path.wildcard("#{File.cwd!()}/test/factories/*.ex")
-      |> Enum.map(fn file ->
-        File.read!(file)
-      end)
-      |> Enum.sort()
-      |> Enum.join("\n")
+    hub_signature = load_request_header(conn, "x-hub-signature")
+    github_event = load_request_header(conn, "x-github-event")
+    delivery = load_request_header(conn, "x-github-deliver")
+    Logger.info("GitHub Event ##{delivery} Type = #{github_event}")
 
-    newcode = """
-    defmodule ExGithubWebhook.Factory do
-    use ExMachina
-
-    #{String.replace(code, "null", "nil")}
-    end
-    """
-
-    File.write!("#{File.cwd!()}/test/support/factory.ex", newcode)
-    raise "FUCK"
-
-    Path.wildcard("#{File.cwd!()}/test/fixtures/**/*.json")
-    |> Enum.map(fn original_file ->
-      folder =
-        Path.dirname(original_file)
-        |> String.replace("/Users/Patrick/Code/personal/ex_github_webhook/test/fixtures/", "")
-
-      contents = File.read!(original_file)
-      item = Jason.decode!(contents)
-      IO.puts("item = build(:#{folder})")
-      IO.puts("IO.puts(item)\n")
-      # new_item = process_map(item, folder)
-    end)
+    conn
+    |> check_signature(hub_signature)
+    |> route(github_event)
   end
 
-  def process_map(map, module) do
-    factory_name =
-      "/Users/Patrick/Code/personal/ex_github_webhook/test/factories/#{module}_factory.ex"
-
-    child_content =
-      Map.keys(map)
-      |> Enum.reduce(%{}, fn key, obj ->
-        value =
-          case is_map(map[key]) do
-            true ->
-              process_map(map[key], key)
-              "build(:#{key})"
-
-            false ->
-              map[key]
-          end
-
-        Map.put(obj, key, value)
-      end)
-
-    content = """
-      def #{module}_factory do
-        %#{Jason.encode!(child_content, pretty: true)}
-      end
-    """
-
-    if !File.exists?(factory_name) do
-      File.write!(factory_name, content)
-    end
+  defp load_request_header(conn, key) do
+    get_req_header(conn, key)
+    |> List.first()
   end
+
+  defp check_signature(conn, signature), do: conn
+  defp route(conn, github_event), do: send_resp(conn, 200, "OK")
 end
