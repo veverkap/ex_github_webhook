@@ -4,7 +4,7 @@ defmodule ExGithubWebhookTest do
   import ExGithubWebhook.Factory
 
   test "runs check_run" do
-    item = build(:check_run)
+    item = build(:check_run_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -18,7 +18,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs check_suite" do
-    item = build(:check_suite)
+    item = build(:check_suite_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -32,7 +32,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs commit_comment" do
-    item = build(:commit_comment)
+    item = build(:commit_comment_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -46,7 +46,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs content_reference" do
-    item = build(:content_reference)
+    item = build(:content_reference_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -60,7 +60,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs create" do
-    item = build(:create)
+    item = build(:create_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -74,7 +74,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs delete" do
-    item = build(:delete)
+    item = build(:delete_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -88,7 +88,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs deploy_key" do
-    item = build(:deploy_key)
+    item = build(:deploy_key_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -102,7 +102,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs deployment" do
-    item = build(:deployment)
+    item = build(:deployment_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -116,7 +116,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs deployment_status" do
-    item = build(:deployment_status)
+    item = build(:deployment_status_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -130,7 +130,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs fork" do
-    item = build(:fork)
+    item = build(:fork_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -144,7 +144,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs github_app_authorization" do
-    item = build(:github_app_authorization)
+    item = build(:github_app_authorization_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -158,7 +158,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs gollum" do
-    item = build(:gollum)
+    item = build(:gollum_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -172,7 +172,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs installation" do
-    item = build(:installation)
+    item = build(:installation_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -186,7 +186,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs installation_repositories" do
-    item = build(:installation_repositories)
+    item = build(:installation_repositories_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -200,7 +200,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs issue_comment" do
-    item = build(:issue_comment)
+    item = build(:issue_comment_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -214,7 +214,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs issues" do
-    item = build(:issues)
+    item = build(:issues_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -228,7 +228,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs label" do
-    item = build(:label)
+    item = build(:label_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -242,7 +242,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs marketplace_purchase" do
-    item = build(:marketplace_purchase)
+    item = build(:marketplace_purchase_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -256,7 +256,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs member" do
-    item = build(:member)
+    item = build(:member_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -270,7 +270,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs membership" do
-    item = build(:membership)
+    item = build(:membership_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -284,7 +284,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs meta" do
-    item = build(:meta)
+    item = build(:meta_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -298,7 +298,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs milestone" do
-    item = build(:milestone)
+    item = build(:milestone_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -312,7 +312,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs org_block" do
-    item = build(:org_block)
+    item = build(:org_block_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -326,7 +326,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs organization" do
-    item = build(:organization)
+    item = build(:organization_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -340,7 +340,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs page_build" do
-    item = build(:page_build)
+    item = build(:page_build_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -354,7 +354,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs project" do
-    item = build(:project)
+    item = build(:project_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -368,7 +368,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs project_card" do
-    item = build(:project_card)
+    item = build(:project_card_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -382,7 +382,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs project_column" do
-    item = build(:project_column)
+    item = build(:project_column_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -396,7 +396,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs public" do
-    item = build(:public)
+    item = build(:public_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -410,7 +410,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs pull_request" do
-    item = build(:pull_request)
+    item = build(:pull_request_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -424,7 +424,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs pull_request_review" do
-    item = build(:pull_request_review)
+    item = build(:pull_request_review_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -438,7 +438,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs pull_request_review_comment" do
-    item = build(:pull_request_review_comment)
+    item = build(:pull_request_review_comment_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -452,7 +452,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs push" do
-    item = build(:push)
+    item = build(:push_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -466,7 +466,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs registry_package" do
-    item = build(:registry_package)
+    item = build(:registry_package_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -480,7 +480,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs release" do
-    item = build(:release)
+    item = build(:release_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -494,7 +494,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs repository" do
-    item = build(:repository)
+    item = build(:repository_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -508,7 +508,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs repository_import" do
-    item = build(:repository_import)
+    item = build(:repository_import_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -522,7 +522,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs repository_vulnerability_alert" do
-    item = build(:repository_vulnerability_alert)
+    item = build(:repository_vulnerability_alert_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -536,7 +536,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs security_advisory" do
-    item = build(:security_advisory)
+    item = build(:security_advisory_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -550,7 +550,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs star" do
-    item = build(:star)
+    item = build(:star_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -564,7 +564,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs status" do
-    item = build(:status)
+    item = build(:status_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -578,7 +578,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs team" do
-    item = build(:team)
+    item = build(:team_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -592,7 +592,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs team_add" do
-    item = build(:team_add)
+    item = build(:team_add_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
@@ -606,7 +606,7 @@ defmodule ExGithubWebhookTest do
   end
 
   test "runs watch" do
-    item = build(:watch)
+    item = build(:watch_event)
 
     conn =
       conn(:post, "/gh-webhook", Jason.encode!(item))
