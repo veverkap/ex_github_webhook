@@ -2,7 +2,6 @@ defmodule Mix.Tasks.GenerateTests do
   use Mix.Task
 
   def run(_) do
-    IO.inspect("DUDE")
     IO.puts("CLEANING EXISTING FOLDERS")
     File.rm_rf!("#{File.cwd!()}/test/factories")
 
@@ -41,28 +40,50 @@ defmodule Mix.Tasks.GenerateTests do
 
     File.write!("#{File.cwd!()}/test/support/factory.ex", newcode)
 
-    Path.wildcard("#{File.cwd!()}/test/fixtures/**/*.json")
-    |> Enum.map(fn original_file ->
-      folder =
-        Path.dirname(original_file)
-        |> String.replace("#{File.cwd!()}/test/fixtures/", "")
+    data =
+      Path.wildcard("#{File.cwd!()}/test/fixtures/**/*.json")
+      |> Enum.map(fn original_file ->
+        folder =
+          Path.dirname(original_file)
+          |> String.replace("#{File.cwd!()}/test/fixtures/", "")
 
-      IO.puts("""
-      test "runs #{folder}" do
-        item = build(:#{folder}_event)
+        """
+        test "runs #{folder}", %{secret: secret} do
+          payload = build(:#{folder}_event) |> Jason.encode!()
 
-        conn =
-          conn(:post, "/gh-webhook", Jason.encode!(item))
-          |> put_req_header("content-type", "application/json")
-          |> put_req_header("x-hub-signature", "sha1=wrong_hexdigest")
-          |> put_req_header("x-github-deliver", "97f3c0e2-7660-11e9-81f7-5c19ca1af1e4")
-          |> put_req_header("x-github-event", "#{folder}")
-          |> ExGithubWebhook.call([])
+          calculated_signature = calculate_signature(secret, payload)
 
-        assert conn.status == 200
-      end
-      """)
-    end)
+          conn =
+            conn(:post, "/gh-webhook", payload)
+            |> put_req_header("content-type", "application/json")
+            |> put_req_header("x-hub-signature", calculated_signature)
+            |> put_req_header("x-github-deliver", "97f3c0e2-7660-11e9-81f7-5c19ca1af1e4")
+            |> put_req_header("x-github-event", "#{folder}")
+            |> ExGithubWebhook.call([secret: secret])
+
+          assert conn.status == 200
+          assert conn.private.github_event == "#{folder}"
+          assert conn.private.hub_signatured_verified
+        end
+        """
+      end)
+      |> Enum.join("\n")
+
+    webhook_test = """
+    defmodule ExGithubWebhookTest do
+    use ExUnit.Case
+    use Plug.Test
+    import ExGithubWebhook.Factory
+
+    defp calculate_signature(secret, payload) do
+    "sha1=" <> (:crypto.hmac(:sha, secret, payload) |> Base.encode16(case: :lower))
+    end
+
+    #{data}
+    end
+    """
+
+    File.write!("#{File.cwd!()}/test/ex_github_webhook_test.exs", webhook_test)
   end
 
   def process_map(map, module) do
